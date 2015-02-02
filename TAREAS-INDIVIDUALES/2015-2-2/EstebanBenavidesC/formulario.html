@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html long="es">
+	<head>
+		<meta charset="UTF-8">
+		<title>Formulario</title>
+	</head>
+
+	<style>
+		ul {
+			list-style: none;
+			}
+	</style>
+
+	<body style="text-align: center">
+		<form action="formulario.html" id="formulario" method="get">
+			<img src="./logo.jpg" />
+			<h1>Departamento RRHH</h1>
+			<h2>Datos Personales</h2>
+			
+			<ul>
+				<li>
+					<label for="nombre">Nombre </label>
+					<input type="text" id="nombre" max-length="30" placeholder="Ingrese nombre" />
+				</li><br>
+				<li>
+					<label for="telefono">Telefono </label> 
+					<input type="text" id="telefono" max-length="20" placeholder="Ingrese telefono" />
+				</li><br>
+				<li>
+					<label for="email">Email </label> 
+					<input type="text" id="email" max-length="20" placeholder="Ingrese Email" />
+				</li><br>
+				<li>
+					<label for="direccion">Direccion </label> 
+					<input type="text" id="direccion" max-length="120" placeholder="Ingrese direccion fisica" />
+				</li><br>
+			</ul>
+			<button type="submit">Submit</button>
+		</form>
+	</body>
+
+</html>
