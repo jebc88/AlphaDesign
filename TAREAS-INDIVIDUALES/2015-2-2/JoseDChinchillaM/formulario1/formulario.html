@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+<style type="text/css">
+    body {background-color:lightgray}
+    h1   {color:darkgreen}
+    p    {color:darkblue}
+</style>
+<!--comienzo del form enviar-->
+<form action="formulario.html" method="get" name="formulario" id="formulario" onSubmit="return myButton_onclick()">
+    <img src="logo.jpg" alt="Logo" height="90" width="160">
+    <p>Jose Daniel Chinchilla M.</p>
+    <h1 align="center">Formulario</h1>
+    <p align="center">Usuario</p>
+    <p align="center"><input id="user" type="text" name="user" maxlength="10"/></p>
+    <p align="center">Password</p>
+    <p align="center"><input id="passwd" type="password" name="passwd" maxlength="8" /></p>
+    <p align="center">Nombre</p>
+    <p align="center"><input id="nam" type="text" name="nam" maxlength="10"/></p>
+    <p align="center">Apellido</p>
+    <p align="center"><input id="ap1" type="text" name="ap1" maxlength="12" /></p>
+    <p align="center">Email</p>
+    <p align="center"><input type="text" id="email" class="validate-email" name="email"></p>
+    <p align="center">Fecha nacimiento</p>
+    <p align="center" id="fechado">
+        <label for="fechad">
+        </label>
+        <select name="fechad" id="fechad">
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+            <option value="4">4</option>
+            <option value="5">5</option>
+            <option value="6">6</option>
+            <option value="7">7</option>
+            <option value="8">8</option>
+            <option value="9">9</option>
+            <option value="10">10</option>
+            <option value="11">11</option>
+            <option value="12">12</option>
+            <option value="13">13</option>
+            <option value="14">14</option>
+            <option value="15">15</option>
+            <option value="16">16</option>
+            <option value="17">17</option>
+            <option value="18">18</option>
+            <option value="19">19</option>
+            <option value="20">20</option>
+            <option value="21">21</option>
+            <option value="22">22</option>
+            <option value="23">23</option>
+            <option value="24">24</option>
+            <option value="25">25</option>
+            <option value="26">26</option>
+            <option value="27">27</option>
+            <option value="28">28</option>
+            <option value="29">29</option>
+            <option value="30">30</option>
+            <option value="31">31</option>
+        </select>
+        <label for="fecham"></label>
+        <select name="fecham" id="fecham">
+            <option value="1">Enero</option>
+            <option value="2">Febrero</option>
+            <option value="3">Marzo</option>
+            <option value="4">Abril</option>
+            <option value="5">Mayo</option>
+            <option value="6">Junio</option>
+            <option value="7">Julio</option>
+            <option value="8">Agosto</option>
+            <option value="9">Septiembre</option>
+            <option value="10">Octubre</option>
+            <option value="11">Noviembre</option>
+            <option value="12">Diciembre</option>
+        </select>
+        <label for="fechayear"></label>
+        <select name="fechayear" id="fechayear">
+            <option value="1">1970</option>
+            <option value="2">1971</option>
+            <option value="3">1972</option>
+            <option value="4">1973</option>
+            <option value="5">1974</option>
+            <option value="6">1975</option>
+            <option value="7">1976</option>
+            <option value="8">1977</option>
+            <option value="9">1978</option>
+            <option value="10">1979</option>
+            <option value="11">1980</option>
+            <option value="12">1981</option>
+            <option value="13">1982</option>
+            <option value="14">1983</option>
+            <option value="15">1984</option>
+            <option value="16">1985</option>
+            <option value="17">1986</option>
+            <option value="18">1987</option>
+            <option value="19">1988</option>
+            <option value="20">1989</option>
+            <option value="21">1990</option>
+            <option value="22">1991</option>
+            <option value="23">1992</option>
+            <option value="24">1993</option>
+            <option value="25">1994</option>
+            <option value="26">1995</option>
+            <option value="27">1996</option>
+            <option value="28">1997</option>
+            <option value="29">1998</option>
+            <option value="30">1999</option>
+            <option value="31">2000</option>
+            <option value="32">2001</option>
+            <option value="33">2002</option>
+            <option value="34">2003</option>
+            <option value="35">2004</option>
+            <option value="36">2005</option>
+        </select>
+    </p>
+        <p align="center">Sexo</p>
+        <p align="center">
+        <select name="sexoc" id="sexoc">
+            <option value="Hombre" selected>Hombre</option>
+            <option value="Mujer">Mujer</option>
+        </select>
+    <p align="center">
+    </p>
+    <p align="center">Nacionalidad</p>
+    <p align="center">
+        <select name="pais" id="pais">
+            <option value="CR">Costa Rica</option>
+            <option value="ARG">Argentina</option>
+            <option value="BRA">Brasil</option>
+            <option value="USA">United States</option>
+            <option value="CND">Canada</option>
+            <option value="MEX">Mexico</option>
+            <option value="otro">Otro</option>
+        </select>
+    </p>
+    <div align="center">
+        <input type="submit" id="enviar" value="Registrar" name="enviar" onClick="myButton_onclick(formulario);"/>
+    </div>
+    </p>
+</form>
+</body>
+</html>
