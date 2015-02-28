@@ -37,26 +37,39 @@ $aProductosCarro = $oCarrito->listadoItemesCarrito();
                 </ul>
                 <form action="carrito.php" method="post">
                     <p>Editar cantidad</p>
-                    <input type="int" name="cantidad" placeholder="<?php echo $aDatosProducto['cantidad']?>">
-                    <input name="counter" type="hidden" value="<?php $counter++; ?>"> <!-- claramente $counter no funciona para mi proposito -->
+                    <input type="int" name="cantidad" placeholder="<?php echo $aDatosProducto['cantidad'] ?>">
+                    <input name="id"  type="hidden" value="<?php echo $aDatosProducto['id']; ?>">
                     <input type="submit" name="edit" value="Editar">
                     <input type="submit" name="remove" value="Borrar">
                 </form>
-            <?php }
-                if (isset($_POST['remove'])){
-                    unset ($_SESSION['carrito'][$counter]); //No logro una forma de extraer/buscar el indice del arreglo que me interesa borrar $counter no funciona
+                <?php
+                if (isset($_POST['remove'])) {
+                    unset ($_SESSION['carrito'][$_POST['id']]);
+                    header("location:carrito.php");
                 }
-                if (isset($_POST['edit'])){
-                    $_SESSION['carrito'][1]= $_POST['cantidad']; // FUNCIONA BIEN
+                if (isset($_POST['edit'])) {
+                    $_SESSION['carrito'][$_POST['id']] = $_POST['cantidad'];
+                    header("location:carrito.php");
                 }
+            }
             ?>
                 <form action="carrito.php" method="post">
+                    <input type="submit" name="purge" value="Empty Cart">
                     <input type="submit" name="logout" value="Log Out">
+                    <input type="submit" name="goBack" value="Return">
                 </form>
             <?php
                 if (isset($_POST['logout'])) {
+                    unset ($_SESSION['carrito']);
                     session_destroy();
-                    header("location:formulario-sesiones.php"); // FUNCIONA
+                    header("location:formulario-sesiones.php");
+                }
+                if (isset($_POST['goBack'])) {
+                    header("location:productos.php");
+                }
+                if (isset($_POST['purge'])) {
+                    unset ($_SESSION['carrito']);
+                    header("location:carrito.php");
                 }
             ?>
         </div>
