@@ -2,9 +2,12 @@ DELIMITER //
 CREATE PROCEDURE detalleVM(p_id INT)
 BEGIN
 
-	SELECT u.usuario as usuario,
+	SELECT  m.idmaquinavirtual as id,
+    		u.usuario as usuario,
 			m.nombre as nombre,
 			m.descripcion as descripcion,
+			m.ram as ram,
+			m.ip as ip,
 			m.fechaCreacion as fecha,
 			m.estado as estado
 	FROM maquinavirtual as m

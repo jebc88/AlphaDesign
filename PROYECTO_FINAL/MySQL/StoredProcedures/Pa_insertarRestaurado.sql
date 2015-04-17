@@ -6,6 +6,9 @@ CREATE PROCEDURE insertarRestaurado
 	p_idmaquina int
 	)
 BEGIN
+    CREATE TEMPORARY TABLE aux(
+	msg varchar(100)
+	);
 		INSERT INTO restaurado
 			(
 			idUsuario,
@@ -22,7 +25,11 @@ BEGIN
 			1
 			); 
 			
-		SELECT 1;
+	INSERT INTO aux(msg)
+	VALUES ('Maquina restaurada con exito');
+	
+	SELECT *
+	FROM aux;
 
 END //
 

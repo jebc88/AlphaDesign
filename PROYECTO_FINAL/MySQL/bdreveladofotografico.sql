@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Apr 08, 2015 at 12:18 AM
+-- Generation Time: Apr 15, 2015 at 03:22 AM
 -- Server version: 5.6.21
 -- PHP Version: 5.6.3
 
@@ -67,6 +67,24 @@ BEGIN
 	
 END$$
 
+CREATE DEFINER=`root`@`localhost` PROCEDURE `detalleVM`(p_id INT)
+BEGIN
+
+	SELECT  m.idmaquinavirtual as id,
+    		u.usuario as usuario,
+			m.nombre as nombre,
+			m.descripcion as descripcion,
+			m.ram as ram,
+			m.ip as ip,
+			m.fechaCreacion as fecha,
+			m.estado as estado
+	FROM maquinavirtual as m
+	INNER JOIN usuario as u
+	ON m.idUsuario=u.idUsuario
+	AND m.idMaquinaVirtual=p_id;
+	
+END$$
+
 CREATE DEFINER=`root`@`localhost` PROCEDURE `eliminarUsuario`(
 	p_id int
 	)
@@ -81,6 +99,30 @@ BEGIN
 			DELETE FROM usuario
 			WHERE	idusuario = p_id;
 		END IF;
+END$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `eliminarVM`(
+	p_id int
+	)
+BEGIN
+	DECLARE existe bit;
+    CREATE TEMPORARY TABLE aux(
+	msg varchar(100)
+	);
+	SET existe:= IFNULL((SELECT	1
+				  FROM	maquinavirtual
+				  WHERE	idmaquinavirtual = p_id),0);
+
+	IF existe = 1 THEN
+			DELETE FROM maquinavirtual
+			WHERE	idmaquinavirtual = p_id;
+		END IF;
+		
+	INSERT INTO aux(msg)
+	VALUES ('Maquina eliminada con exito');
+	
+	SELECT *
+	FROM aux;
 END$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `insertarEliminado`(
@@ -111,14 +153,16 @@ END$$
 CREATE DEFINER=`root`@`localhost` PROCEDURE `insertarMaquinaVirtual`(
 	p_idusuario int,
 	p_nombre varchar(50),
-	p_descripcion varchar(50)
+	p_descripcion varchar(50),
+	p_ram varchar(10),
+	p_ip varchar(20)
 	)
 BEGIN
 
 	DECLARE mismoNombre bit;
 	
-    CREATE TEMPORARY TABLE errorMsg(
-	Error varchar(100)
+    CREATE TEMPORARY TABLE aux(
+	msg varchar(100)
 	);
 	
 	SET mismoNombre := IFNULL ((SELECT 1
@@ -131,6 +175,8 @@ BEGIN
 			idUsuario,
 			nombre,
 			descripcion,
+			ram,
+			ip,
 			fechaCreacion,
 			estado
 			)
@@ -140,20 +186,23 @@ BEGIN
 			p_idusuario,
 			p_nombre,
 			p_descripcion,
+			p_ram,
+			p_ip,
 			NOW(),
 			1
 			);
 			
-		SELECT 1;
+		INSERT INTO aux(msg)
+		VALUES('Maquina virtual ingresada con exito');
             
     ELSE
-		INSERT INTO errorMsg(Error)
+		INSERT INTO aux(msg)
 		VALUES('Ya existe una maquina con el mismo nombre');
-		
-		SELECT *
-		FROM errorMsg;
         
     END IF;
+	
+	SELECT *
+	FROM aux;
 
 END$$
 
@@ -162,6 +211,10 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `insertarRespaldo`(
 	p_idmaquina int
 	)
 BEGIN
+
+    CREATE TEMPORARY TABLE aux(
+	msg varchar(100)
+	);
 		INSERT INTO respaldo
 			(
 			idUsuario,
@@ -169,24 +222,28 @@ BEGIN
 			fechaCreacion,
 			estado
 			)
-
 		VALUES
 			(
 			p_idusuario,
 			p_idmaquina,
 			NOW(),
 			1
-			); 
+			);
 			
-		SELECT 1;
+	INSERT INTO aux(msg)
+	VALUES ('Maquina respaldada con exito');
+	
+	SELECT *
+	FROM aux;
+
 
 END$$
 
-CREATE DEFINER=`root`@`localhost` PROCEDURE `insertarRestaurado`(
-	p_idusuario int,
-	p_idmaquina int
-	)
+CREATE DEFINER=`root`@`localhost` PROCEDURE `insertarRestaurado`(IN `p_idusuario` INT, IN `p_idmaquina` INT)
 BEGIN
+    CREATE TEMPORARY TABLE aux(
+	msg varchar(100)
+	);
 		INSERT INTO restaurado
 			(
 			idUsuario,
@@ -203,7 +260,11 @@ BEGIN
 			1
 			); 
 			
-		SELECT 1;
+	INSERT INTO aux(msg)
+	VALUES ('Maquina restaurada con exito');
+	
+	SELECT *
+	FROM aux;
 
 END$$
 
@@ -227,8 +288,8 @@ BEGIN
 	DECLARE existeUsuario bit;
 	DECLARE exito bit DEFAULT 0;
 	
-    CREATE TEMPORARY TABLE errorMsg(
-	Error varchar(100)
+    CREATE TEMPORARY TABLE aux(
+	msg varchar(100)
 	);
 	
 	SET existeId := IFNULL ((SELECT 1
@@ -281,25 +342,28 @@ BEGIN
 			NOW(),
 			0
 			);
+			
+		INSERT INTO aux(msg)
+		VALUES('Usuario Ingresado con exito');
             
     ELSE
     	IF (existeId = 1) THEN
-			INSERT INTO errorMsg(Error)
+			INSERT INTO aux(msg)
 			VALUES('Identificacion ya existe');
 		END IF;
 		IF (existeCorreo = 1) THEN
-			INSERT INTO errorMsg(Error)
+			INSERT INTO aux(msg)
 			VALUES('Correo ya existe');
 		END IF;
 		IF (existeUsuario = 1) THEN
-			INSERT INTO errorMsg(Error)
+			INSERT INTO aux(msg)
 			VALUES('Nombre de usuario ya existe');
 		END IF;
-		
-		SELECT *
-		FROM errorMsg;
         
     END IF;
+	
+	SELECT *
+	FROM aux;
 
 END$$
 
@@ -315,11 +379,31 @@ BEGIN
 	
 END$$
 
+CREATE DEFINER=`root`@`localhost` PROCEDURE `maquinasUsuario`(p_idusuario int)
+BEGIN
+
+	SELECT usuario.idUsuario as idusuario,
+		   maquinavirtual.idmaquinavirtual as idmaquina,
+		   maquinavirtual.nombre as nombre
+	FROM maquinavirtual
+	INNER JOIN usuario 
+	ON usuario.idusuario = maquinavirtual.idusuario
+	AND usuario.idusuario = p_idusuario;
+	
+END$$
+
 CREATE DEFINER=`root`@`localhost` PROCEDURE `obtenerMaquinasVirtuales`()
 BEGIN
 
-	SELECT *
-	FROM maquinavirtual;
+	SELECT  m.idMaquinaVirtual as id,
+    		u.usuario as usuario,
+    		m.nombre as nombre,
+            m.descripcion as descripcion,
+            m.fechaCreacion as fecha,
+            m.estado as estado
+	FROM maquinavirtual as m
+    INNER JOIN usuario as u
+    on m.idUsuario=u.idUsuario;
 	
 END$$
 
@@ -358,9 +442,18 @@ CREATE TABLE IF NOT EXISTS `maquinavirtual` (
   `idUsuario` int(11) NOT NULL,
   `nombre` varchar(50) COLLATE utf8_bin NOT NULL,
   `descripcion` varchar(50) COLLATE utf8_bin NOT NULL,
+  `ram` varchar(10) COLLATE utf8_bin NOT NULL,
+  `ip` varchar(20) COLLATE utf8_bin NOT NULL,
   `fechaCreacion` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `estado` bit(1) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+
+--
+-- Dumping data for table `maquinavirtual`
+--
+
+INSERT INTO `maquinavirtual` (`idMaquinaVirtual`, `idUsuario`, `nombre`, `descripcion`, `ram`, `ip`, `fechaCreacion`, `estado`) VALUES
+(8, 1, 'POS1', 'CENFOTEC', '2048', '10.10.10.12', '2015-04-14 15:07:05', b'1');
 
 -- --------------------------------------------------------
 
@@ -374,7 +467,7 @@ CREATE TABLE IF NOT EXISTS `respaldo` (
   `idMaquinaVirtual` int(11) NOT NULL,
   `fechaCreacion` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `estado` bit(1) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
 -- --------------------------------------------------------
 
@@ -388,7 +481,7 @@ CREATE TABLE IF NOT EXISTS `restaurado` (
   `idMaquinaVirtual` int(11) NOT NULL,
   `fechaCreacion` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `estado` bit(1) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
 -- --------------------------------------------------------
 
@@ -419,7 +512,7 @@ CREATE TABLE IF NOT EXISTS `usuario` (
 
 INSERT INTO `usuario` (`idUsuario`, `identificacion`, `nombre`, `apellido1`, `apellido2`, `fechaNacimiento`, `genero`, `telefono`, `correo`, `usuario`, `pass`, `tipo`, `fechaCreacion`, `estado`) VALUES
 (1, '11115555', 'John', 'Smith', 'Collins', '1988-07-07', 'M', '55556666', 'jsmith@torrent.com', 'jsmith', '*00A51F3F48415C7D4E8908980D443C29C69B60C9', 1, '2015-04-07 14:05:02', b'1'),
-(2, '99998888', 'Bob', 'Marley', 'Junior', '1972-04-04', 'M', '66664444', 'bob@marley.com', 'bmarley', '*00A51F3F48415C7D4E8908980D443C29C69B60C9', 2, '2015-04-07 14:19:33', b'1');
+(2, '99998888', 'Bob', 'Marley', 'Junior', '1972-04-04', 'M', '66664444', 'bob@marley.com', 'bmarley', '*00A51F3F48415C7D4E8908980D443C29C69B60C9', 2, '2015-04-07 14:19:33', b'0');
 
 --
 -- Indexes for dumped tables
@@ -468,17 +561,17 @@ MODIFY `idEliminado` int(11) NOT NULL AUTO_INCREMENT;
 -- AUTO_INCREMENT for table `maquinavirtual`
 --
 ALTER TABLE `maquinavirtual`
-MODIFY `idMaquinaVirtual` int(11) NOT NULL AUTO_INCREMENT;
+MODIFY `idMaquinaVirtual` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=9;
 --
 -- AUTO_INCREMENT for table `respaldo`
 --
 ALTER TABLE `respaldo`
-MODIFY `idRespaldo` int(11) NOT NULL AUTO_INCREMENT;
+MODIFY `idRespaldo` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=11;
 --
 -- AUTO_INCREMENT for table `restaurado`
 --
 ALTER TABLE `restaurado`
-MODIFY `idRestaurado` int(11) NOT NULL AUTO_INCREMENT;
+MODIFY `idRestaurado` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=6;
 --
 -- AUTO_INCREMENT for table `usuario`
 --
