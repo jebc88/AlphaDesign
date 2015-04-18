@@ -1,0 +1,86 @@
+/*-----------------------------------------------------------------------------
+
+REVOLUTION RESPONSIVE BASIC STYLES OF HTML DOCUMENT
+
+Screen Stylesheet
+
+version:   	1.0
+date:      	26/06/12
+author:		themepunch
+email:     	support@themepunch.com
+website:   	http://www.themepunch.com
+-----------------------------------------------------------------------------*/
+
+
+
+/*----------------------------------------*/
+/*----- Custom styles -----*/
+/*----------------------------------------*/
+.fullwidthbanner-container {
+	width:100% !important;
+	position:relative;
+	padding:0;
+	max-height:500px !important;
+	overflow:hidden;
+	background: #222;
+}
+.fullwidthbanner-container {
+	color: #fff;
+}
+.tp-caption.caption-box-grey {
+	background: #818181;
+	padding: 10px 20px;
+	font-size: 16px;
+	color: #fff;
+	line-height: 1em;
+}
+.tp-caption.caption-box-dark {
+	background: #292929;
+	padding: 10px 20px;
+	font-size: 16px;
+	color: #509fb9;
+	font-weight: 600;
+}
+.tp-caption.caption-box-orange {
+	font-size: 16px;
+	color: #fff;
+	background: #b95050;
+	padding: 10px 20px;
+	font-weight: 600;
+}
+.tp-caption.caption-box-green {
+	background: #86b950;
+	padding: 10px 20px;
+	font-size: 16px;
+	color: #fff;
+	font-weight: 600;
+}
+.tp-caption.caption-box-blue {
+	background: #509fb9;
+	padding: 10px 20px;
+	font-size: 16px;
+	color: #fff;
+	font-weight: 600;
+}
+.caption-color {
+	color: #509fb9 !important;
+	font-weight: 700;
+}
+.tp-caption.large_text {
+	position: absolute;
+	color: #fff;
+	text-shadow: none;
+	font-weight: 400;
+	font-size: 30px;
+	line-height: 36px;
+	font-family: 'Open Sans', sans;
+	margin: 0px;
+	border-width: 0px;
+	border-style: none;
+	white-space:nowrap;
+	text-shadow: none;
+}
+.tp-caption.large_text strong {
+	color: #fff;
+	font-weight: 700;
+}
