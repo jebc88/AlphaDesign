@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>Mensaje</title>
+    <script language="Javascript">
+
+        function redirectURL(){
+            window.opener.location.href = "virtualmachines.php";
+            window.close();
+        }
+
+    </script>
+</head>
+<body>
+    <h4>Copie y corra este comando en la VM</h4><br>
+<table border="1px">
+    <thead>
+        <tr>
+            <th>Restauracion</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>/var/www/alphadesign/public_html/respaldo/php respaldo.php</td>
+        </tr>
+    </tbody>
+</table>
+
+    <br><input onclick="redirectURL()" type="button" name="close" value="Close">
+</body>
+</html>
